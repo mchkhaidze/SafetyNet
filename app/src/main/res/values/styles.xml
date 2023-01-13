@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="textfield_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/textfield_margin</item>
+        <item name="android:layout_marginEnd">@dimen/textfield_margin</item>
+        <item name="android:padding">@dimen/textfield_padding</item>
+        <item name="android:textSize">@dimen/textfield_text_size</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:backgroundTint">@color/textfield_color</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/textfield_margin</item>
+        <item name="android:layout_marginEnd">@dimen/textfield_margin</item>
+        <item name="android:layout_marginTop">@dimen/sign_in_margin</item>
+        <item name="android:padding">@dimen/textfield_padding</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:background">"#40000000"</item>
+        <item name="android:backgroundTint">@color/button_color</item>
+    </style>
+</resources>
