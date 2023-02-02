@@ -48,7 +48,7 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
             when {
                 email == "" -> Utils.showWarning(getString(R.string.empty_email), signUpButton)
                 pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signUpButton)
-                else -> AuthenticationService.signUp(email, pass, this::handleError)
+                else -> AuthenticationService.signUp(email, pass, this::goToSettings, this::handleError)
             }
         }
     }
@@ -79,10 +79,10 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
         signInText.highlightColor = Color.TRANSPARENT
     }
 
-//        private fun goToConversations() : Boolean {
-//        goToPage(this, ChatSearchPage::class.java)
-//        return false
-//    }
+    private fun goToSettings(): Boolean {
+        NavigationService.loadPage(this, Settings::class.java)
+        return false
+    }
 
     override fun handleError(err: String): Boolean {
         Utils.showWarning(err, signUpButton)

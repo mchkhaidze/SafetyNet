@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="personal"
+        app:title="Personal Information">
+
+        <EditTextPreference
+            app:key="username"
+            app:title="Username" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="conf"
+        app:title="Configurations">
+
+        <SeekBarPreference
+            android:max="100"
+            app:defaultValue="10"
+            app:showSeekBarValue="true"
+            app:title="Enable message notifications" />
+
+        <SwitchPreferenceCompat app:title="Alerts" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

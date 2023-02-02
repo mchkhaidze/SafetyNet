@@ -15,4 +15,6 @@
     <color name="dot_color">#494A63</color>
     <color name="magnifier_color">#5A5A5A</color>
     <color name="imageFrameColor">#68B3FF</color>
+    <color name="appMainColor">#0054A8</color>
+    <color name="appSecondaryColor">#99C0E6</color>
 </resources>

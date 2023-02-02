@@ -28,4 +28,8 @@
     <string name="chatUserUid">uid</string>
     <string name="logo_dsc">logo_dsc</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="username">Username</string>
+    <string name="distance">Distance</string>
+    <string name="alerts">Alerts</string>
+    <string name="settings">Settings</string>
 </resources>

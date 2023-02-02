@@ -1,14 +1,22 @@
 package ge.mchkhaidze.safetynet
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import ge.mchkhaidze.safetynet.UserInfo.Companion.DEFAULT_ALERT
+import ge.mchkhaidze.safetynet.UserInfo.Companion.DEFAULT_RADIUS
+import ge.mchkhaidze.safetynet.UserInfoService.Companion.uploadUserInformation
 
 class AuthenticationService {
     companion object {
+
+        private const val DEFAULT_PHOTO =
+            "android.resource://ge.mchkhaidze.safetynet/drawable/default_profile_picture"
+
         fun signUp(
             email: String,
             password: String,
-//            actionAfterLogged: () -> Boolean,
+            actionAfterLogged: () -> Boolean,
             handleError: (String) -> Boolean
         ) {
             if (email.isEmpty() || password.isEmpty()) {
@@ -24,7 +32,16 @@ class AuthenticationService {
                         "SignUp",
                         "User created with credentials: ${it.result!!.user!!.uid}, $email, $password"
                     )
-//                    actionAfterLogged()
+                    val imageUri: Uri = Uri.parse(DEFAULT_PHOTO)
+                    uploadUserInformation(
+                        "user_" + (0..1000000000).random(),
+                        imageUri,
+                        "",
+                        DEFAULT_RADIUS,
+                        DEFAULT_ALERT,
+                        actionAfterLogged,
+                        handleError
+                    )
                 }
                 .addOnFailureListener {
                     it.message?.let { it1 -> handleError(it1) }
@@ -37,7 +54,7 @@ class AuthenticationService {
 
         fun logIn(
             email: String,
-            password: String    ,
+            password: String,
 //            actionAfterLogged: () -> Boolean,
             handleError: (String) -> Boolean
         ) {

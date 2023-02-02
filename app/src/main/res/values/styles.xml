@@ -24,4 +24,15 @@
         <item name="android:background">"#40000000"</item>
         <item name="android:backgroundTint">@color/button_color</item>
     </style>
+
+    <style name="label_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@color/appMainColor</item>
+    </style>
+
+    <style name="switch_style">
+        <item name="colorControlActivated">@color/appMainColor</item>
+    </style>
 </resources>
