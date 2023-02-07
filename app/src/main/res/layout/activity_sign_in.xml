@@ -1,51 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
-    android:clickable="true"
-    android:focusable="true"
+    android:background="@drawable/city"
+    tools:context=".SignInActivity"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    tools:context=".SignInActivity">
-    <!--todo-->
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/common_google_signin_btn_icon_dark_focused"
-        android:contentDescription="@string/logo_dsc" />
+    android:focusable="true"
+    android:clickable="true">
 
-    <EditText
-        android:id="@+id/email_si"
-        style="@style/textfield_style"
-        android:layout_marginTop="@dimen/email_margin"
-        android:autofillHints="emailAddress"
-        android:hint="@string/enter_email"
-        android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/pass_si"
-        style="@style/textfield_style"
-        android:layout_marginTop="@dimen/pass_margin"
-        android:autofillHints="password"
-        android:hint="@string/enter_password"
-        android:inputType="textPassword" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="20dp"
+        android:background="#80FFFFFF"
+        android:elevation="10dp"
+        android:padding="20dp"
+        app:cardBackgroundColor="#C1686D7C"
+        app:cardCornerRadius="10dp">
 
-    <Button
-        android:id="@+id/sign_in"
-        style="@style/button_style"
-        android:text="@string/sign_in" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="40dp">
+
+            <ImageView
+                android:id="@+id/logo_image_view"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/logo"
+                app:srcCompat="@drawable/logo"
+                app:tint="#34FFFFFF" />
+
+            <EditText
+                android:id="@+id/email_si"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="emailAddress"
+                android:backgroundTint="@color/white"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingVertical="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
+            <EditText
+                android:id="@+id/pass_si"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:backgroundTint="@color/white"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
+            <Button
+                android:id="@+id/sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#001450"
+                android:text="@string/sign_in" />
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="16dp"-->
+            <!--                android:gravity="center_horizontal"-->
+            <!--                android:orientation="vertical">-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="Login with:"-->
+            <!--                    android:textSize="20sp" />-->
+
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="horizontal">-->
+
+            <!--                    <ImageButton-->
+            <!--                        android:layout_width="60dp"-->
+            <!--                        android:layout_height="60dp"-->
+            <!--                        android:src="@drawable/common_google_signin_btn_icon_dark_focused" />-->
+
+            <!--                    <ImageButton-->
+            <!--                        android:layout_width="60dp"-->
+            <!--                        android:layout_height="60dp"-->
+            <!--                        android:layout_marginStart="20dp"-->
+            <!--                        android:src="@drawable/common_google_signin_btn_icon_dark" />-->
+
+            <!--                    <ImageButton-->
+            <!--                        android:layout_width="60dp"-->
+            <!--                        android:layout_height="60dp"-->
+            <!--                        android:layout_marginStart="20dp"-->
+            <!--                        android:src="@drawable/common_google_signin_btn_icon_dark_focused" />-->
+            <!--                </LinearLayout>-->
+            <!--            </LinearLayout>-->
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/sign_up_link"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
         android:text="@string/not_registered"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="@dimen/button_text_size" />
+        android:textSize="18sp" />
 
-</LinearLayout>
+</RelativeLayout>

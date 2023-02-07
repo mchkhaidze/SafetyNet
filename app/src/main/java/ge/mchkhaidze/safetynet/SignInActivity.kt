@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import ge.mchkhaidze.safetynet.Utils.Companion.hideSoftKeyboard
+import ge.mchkhaidze.safetynet.feed.NewsFeed
 
 
 class SignInActivity : BaseActivity(), ErrorHandler {
@@ -50,7 +51,7 @@ class SignInActivity : BaseActivity(), ErrorHandler {
             when {
                 email == "" -> Utils.showWarning(getString(R.string.empty_email), signInButton)
                 pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signInButton)
-                else -> AuthenticationService.logIn(email, pass, this::handleError)
+                else -> AuthenticationService.logIn(email, pass, this::goToFeed, this::handleError)
             }
         }
     }
@@ -81,11 +82,11 @@ class SignInActivity : BaseActivity(), ErrorHandler {
         signUpText.highlightColor = Color.TRANSPARENT
     }
 
-//
-//    private fun goToConversations(): Boolean {
-//        goToPage(this, ChatSearchPage::class.java)
-//        return true
-//    }
+
+    private fun goToFeed(): Boolean {
+        NavigationService.loadPage(this@SignInActivity, NewsFeed::class.java)
+        return true
+    }
 
     override fun handleError(err: String): Boolean {
         Utils.showWarning(err, signInButton)

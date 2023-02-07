@@ -55,7 +55,7 @@ class AuthenticationService {
         fun logIn(
             email: String,
             password: String,
-//            actionAfterLogged: () -> Boolean,
+            actionAfterLogged: () -> Boolean,
             handleError: (String) -> Boolean
         ) {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
@@ -68,7 +68,7 @@ class AuthenticationService {
                         "LogIn",
                         "User Logged in with credentials: $email, $password"
                     )
-//                    actionAfterLogged()
+                    actionAfterLogged()
                 }
                 .addOnFailureListener {
                     it.message?.let { it1 -> handleError(it1) }
