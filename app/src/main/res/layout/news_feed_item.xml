@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:cardCornerRadius="@dimen/user_photo_size"
+            app:cardCornerRadius="@dimen/poster_photo_size"
             app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +23,6 @@
                 android:id="@+id/poster_image"
                 android:layout_width="@dimen/poster_photo_size"
                 android:layout_height="@dimen/poster_photo_size"
-                android:background="@color/white"
                 android:contentDescription="@string/profile_photo"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
@@ -63,20 +62,20 @@
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/post"
                 android:maxHeight="500dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/overlay_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"
-                android:textStyle="bold"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/rounded_corners_for_image_count"
+                android:padding="10dp"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                android:padding="10dp"/>
+                android:textStyle="bold"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView

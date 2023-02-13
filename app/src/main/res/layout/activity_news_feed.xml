@@ -34,17 +34,18 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/nav_bar_menu"
         android:background="@color/appMainColor"
-        app:itemIconTint="#F5F8FF"/>
+        app:itemIconTint="#F5F8FF" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/call_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="141dp"
+        android:contentDescription="@string/emergency_button"
         android:src="@drawable/ic_baseline_emergency_24"
+        app:backgroundTint="#ECEEFD"
         app:layout_anchor="@id/navigation"
-        app:backgroundTint="#F5F8FF"
-        app:tint="@color/appMainColor"
         app:layout_anchorGravity="center_horizontal"
-        android:contentDescription="@string/emergency_button"/>
+        app:maxImageSize="40dp"
+        app:tint="@color/appMainColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
