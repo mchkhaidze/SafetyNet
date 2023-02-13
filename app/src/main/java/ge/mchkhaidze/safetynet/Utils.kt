@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Utils {
 
@@ -28,6 +31,20 @@ class Utils {
                     )
                 }
             }
+        }
+
+        fun Activity.startLoader() {
+            findViewById<LinearLayout>(R.id.progressBar).visibility = View.VISIBLE
+        }
+
+        fun Activity.stopLoader() {
+            findViewById<LinearLayout>(R.id.progressBar).visibility = View.GONE
+        }
+
+        fun getFormattedDate(): String {
+            val date = Date()
+            val format = SimpleDateFormat("dd MMM yyyy 'at' HH:mm", Locale.getDefault())
+            return format.format(date)
         }
     }
 

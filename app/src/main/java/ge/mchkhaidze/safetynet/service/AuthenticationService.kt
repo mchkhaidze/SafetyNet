@@ -1,17 +1,17 @@
-package ge.mchkhaidze.safetynet
+package ge.mchkhaidze.safetynet.service
 
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import ge.mchkhaidze.safetynet.UserInfo.Companion.DEFAULT_ALERT
-import ge.mchkhaidze.safetynet.UserInfo.Companion.DEFAULT_RADIUS
-import ge.mchkhaidze.safetynet.UserInfoService.Companion.uploadUserInformation
+import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_ALERT
+import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_RADIUS
+import ge.mchkhaidze.safetynet.service.UserInfoService.Companion.uploadUserInformation
 
 class AuthenticationService {
     companion object {
 
         private const val DEFAULT_PHOTO =
-            "android.resource://ge.mchkhaidze.safetynet/drawable/default_profile_picture"
+            "android.resource://ge.mchkhaidze.safetynet/drawable/profile_pic"
 
         fun signUp(
             email: String,

@@ -4,6 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/button_color"
+            android:indeterminate="true" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_feed_recycler_view"
         android:layout_width="match_parent"
@@ -11,19 +25,26 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/navigation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        app:menu="@menu/navigation"/>-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:elevation="0dp"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/nav_bar_menu"
+        android:background="@color/appMainColor"
+        app:itemIconTint="#F5F8FF"/>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/ic_add"-->
-<!--        app:layout_anchor="@id/navigation"-->
-<!--        app:layout_anchorGravity="center_horizontal|bottom"/>-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/call_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_emergency_24"
+        app:layout_anchor="@id/navigation"
+        app:backgroundTint="#F5F8FF"
+        app:tint="@color/appMainColor"
+        app:layout_anchorGravity="center_horizontal"
+        android:contentDescription="@string/emergency_button"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

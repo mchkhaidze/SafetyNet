@@ -1,4 +1,4 @@
-package ge.mchkhaidze.safetynet
+package ge.mchkhaidze.safetynet.activity
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +10,13 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import ge.mchkhaidze.safetynet.ErrorHandler
+import ge.mchkhaidze.safetynet.R
+import ge.mchkhaidze.safetynet.Settings
+import ge.mchkhaidze.safetynet.Utils
 import ge.mchkhaidze.safetynet.Utils.Companion.hideSoftKeyboard
+import ge.mchkhaidze.safetynet.service.AuthenticationService
+import ge.mchkhaidze.safetynet.service.NavigationService
 
 class SignUpActivity : BaseActivity(), ErrorHandler {
 

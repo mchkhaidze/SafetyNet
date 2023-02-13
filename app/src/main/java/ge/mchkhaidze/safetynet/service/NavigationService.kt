@@ -1,4 +1,4 @@
-package ge.mchkhaidze.safetynet
+package ge.mchkhaidze.safetynet.service
 
 import android.content.Context
 import android.content.Intent

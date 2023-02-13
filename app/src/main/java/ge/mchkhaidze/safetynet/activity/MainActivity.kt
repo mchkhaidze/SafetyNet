@@ -1,9 +1,11 @@
-package ge.mchkhaidze.safetynet
+package ge.mchkhaidze.safetynet.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
+import ge.mchkhaidze.safetynet.R
+import ge.mchkhaidze.safetynet.service.NavigationService
 
 class MainActivity : AppCompatActivity() {
 

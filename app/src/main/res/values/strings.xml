@@ -35,4 +35,9 @@
     <string name="logo">logo</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="news_feed">news feed</string>
+    <string name="map">map</string>
+    <string name="emergency_button">emergency button</string>
+    <string name="post">post</string>
+    <string name="resource">resource</string>
 </resources>

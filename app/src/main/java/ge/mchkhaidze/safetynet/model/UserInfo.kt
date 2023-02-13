@@ -1,10 +1,12 @@
-package ge.mchkhaidze.safetynet
+package ge.mchkhaidze.safetynet.model
 
-data class UserInfo(var username: String,
-                    var photo: String,
-                    var uid: String = "",
-                    var radius: Int,
-                    var alert: Boolean){
+data class UserInfo(
+    var username: String,
+    var photo: String,
+    var uid: String = "",
+    var radius: Int,
+    var alert: Boolean
+) {
 
     companion object {
         const val USERS = "users"

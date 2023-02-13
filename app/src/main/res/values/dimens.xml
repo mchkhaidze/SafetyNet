@@ -38,7 +38,7 @@
     <dimen name="searchview_height">56dp</dimen>
     <dimen name="searchview_margin">20dp</dimen>
     <dimen name="searchview_radius">50dp</dimen>
-    <dimen name="conv_photo_size">60dp</dimen>
+    <dimen name="poster_photo_size">60dp</dimen>
     <dimen name="name_size">16sp</dimen>
     <dimen name="conversations_margin">16dp</dimen>
     <dimen name="msg_margin">32dp</dimen>

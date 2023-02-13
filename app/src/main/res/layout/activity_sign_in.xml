@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/city"
-    tools:context=".SignInActivity"
+    tools:context=".activity.SignInActivity"
     android:focusableInTouchMode="true"
     android:focusable="true"
     android:clickable="true">
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="#001450"
+                android:backgroundTint="@color/appMainColor"
                 android:text="@string/sign_in" />
 
             <!--            <LinearLayout-->
