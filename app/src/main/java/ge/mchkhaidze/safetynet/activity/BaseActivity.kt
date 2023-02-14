@@ -1,10 +1,10 @@
 package ge.mchkhaidze.safetynet.activity
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import ge.mchkhaidze.safetynet.R
 
 open class BaseActivity : AppCompatActivity() {
@@ -12,6 +12,15 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
 
+        hideBars()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        hideBars()
+    }
+
+    private fun hideBars() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
         } else {
@@ -22,7 +31,8 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         window.decorView.apply {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         }
     }
 }
