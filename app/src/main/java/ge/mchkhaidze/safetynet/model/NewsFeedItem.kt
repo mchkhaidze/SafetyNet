@@ -1,6 +1,7 @@
 package ge.mchkhaidze.safetynet.model
 
 data class NewsFeedItem(
+    var userId: String,
     var userImage: String,
     var userName: String,
     var resources: List<String>,

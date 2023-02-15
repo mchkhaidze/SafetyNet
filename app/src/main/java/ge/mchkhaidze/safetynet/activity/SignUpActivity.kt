@@ -22,6 +22,7 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
 
     private lateinit var signInText: TextView
     private lateinit var signUpButton: Button
+    private lateinit var usernameField: TextView
     private lateinit var emailField: TextView
     private lateinit var passwordField: TextView
 
@@ -35,11 +36,13 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
         setUpSignUpButton()
         setUpSignInButton()
 
+        hideSoftKeyboard(R.id.username_su)
         hideSoftKeyboard(R.id.email_su)
         hideSoftKeyboard(R.id.pass_su)
     }
 
     private fun initViews() {
+        usernameField = findViewById(R.id.username_su)
         emailField = findViewById(R.id.email_su)
         passwordField = findViewById(R.id.pass_su)
         signUpButton = findViewById(R.id.sign_up)
@@ -48,13 +51,14 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
 
     private fun setUpSignUpButton() {
         signUpButton.setOnClickListener {
+            val username = usernameField.text.toString()
             val email = emailField.text.toString()
             val pass = passwordField.text.toString()
 
             when {
                 email == "" -> Utils.showWarning(getString(R.string.empty_email), signUpButton)
                 pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signUpButton)
-                else -> AuthenticationService.signUp(email, pass, this::goToSettings, this::handleError)
+                else -> AuthenticationService.signUp(username, email, pass, this::goToSettings, this::handleError)
             }
         }
     }

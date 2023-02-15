@@ -38,6 +38,19 @@
                 app:srcCompat="@drawable/logo"
                 app:tint="#34FFFFFF" />
 
+
+            <EditText
+                android:id="@+id/username_su"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="username"
+                android:backgroundTint="@color/white"
+                android:hint="@string/username"
+                android:inputType="text"
+                android:paddingVertical="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
             <EditText
                 android:id="@+id/email_su"
                 android:layout_width="match_parent"

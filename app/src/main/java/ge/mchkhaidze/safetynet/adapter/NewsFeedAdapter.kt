@@ -1,23 +1,30 @@
 package ge.mchkhaidze.safetynet.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import ge.mchkhaidze.safetynet.R
+import ge.mchkhaidze.safetynet.activity.ProfileActivity
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
+import ge.mchkhaidze.safetynet.model.UserInfo
+import ge.mchkhaidze.safetynet.service.NavigationService
 
-class NewsFeedAdapter : RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
+class NewsFeedAdapter(private val context: Context) :
+    RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
 
     var list: ArrayList<NewsFeedItem> = ArrayList()
     private var isTextExpanded = false
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val newsFeedUserPhoto: ImageView = itemView.findViewById(R.id.poster_image)
+        val newsFeedUserImageCard: CardView = itemView.findViewById(R.id.profile_image)
         val newsFeedUsername: TextView = itemView.findViewById(R.id.profile_name)
         val newsFeedPostDate: TextView = itemView.findViewById(R.id.date)
         val viewPager: ViewPager2 = itemView.findViewById(R.id.view_pager)
@@ -59,6 +66,22 @@ class NewsFeedAdapter : RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
                 }
             }
         })
+
+        holder.newsFeedUserImageCard.setOnClickListener {
+            val extras = mapOf(
+                Pair(UserInfo.USERNAME, post.userName),
+                Pair(NewsFeedItem.UID, post.userId)
+            )
+            NavigationService.loadPage(context, ProfileActivity::class.java, extras)
+        }
+
+        holder.newsFeedUsername.setOnClickListener {
+            val extras = mapOf(
+                Pair(UserInfo.USERNAME, post.userName),
+                Pair(NewsFeedItem.UID, post.userId)
+            )
+            NavigationService.loadPage(context, ProfileActivity::class.java, extras)
+        }
 
     }
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -20,6 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafetyNet"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.NewsFeedActivity"
             android:exported="false">
@@ -81,7 +88,6 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SafetyNet.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

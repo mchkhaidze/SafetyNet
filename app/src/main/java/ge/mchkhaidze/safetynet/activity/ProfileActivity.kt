@@ -9,13 +9,13 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
 import ge.mchkhaidze.safetynet.ErrorHandler
 import ge.mchkhaidze.safetynet.NewPostFragment
 import ge.mchkhaidze.safetynet.R
-import ge.mchkhaidze.safetynet.Utils.Companion.showWarning
+import ge.mchkhaidze.safetynet.Utils
 import ge.mchkhaidze.safetynet.Utils.Companion.startLoader
 import ge.mchkhaidze.safetynet.Utils.Companion.stopLoader
 import ge.mchkhaidze.safetynet.adapter.NewsFeedAdapter
@@ -25,23 +25,33 @@ import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERNAME
 import ge.mchkhaidze.safetynet.service.NavigationService
 import ge.mchkhaidze.safetynet.service.NewsFeedService
 
-class NewsFeedActivity : BaseActivity(), ErrorHandler {
+class ProfileActivity : BaseActivity(), ErrorHandler {
 
     private val emergencyNumber = "tel:112"
     private val feedManager = NewsFeedService()
     private var adapter = NewsFeedAdapter(this)
-
+    private lateinit var uid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_news_feed)
+        setContentView(R.layout.activity_profile)
 
         window.exitTransition = Slide(Gravity.BOTTOM)
 
+        setUpToolBar()
         setUpRV()
         setUpNavBar()
         loadData()
     }
+
+    private fun setUpToolBar() {
+        val extras = intent.extras
+        if (extras != null) {
+            uid = extras.getString(UID).toString()
+            findViewById<MaterialToolbar>(R.id.toolbar_user).title = extras.getString(USERNAME)
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.nav_bar_menu, menu)
@@ -66,6 +76,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         nav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
+                    NavigationService.loadPage(this, NewsFeedActivity::class.java)
                     true
                 }
                 R.id.map -> {
@@ -77,11 +88,6 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
                     true
                 }
                 R.id.profile -> {
-                    val extras = mapOf(
-                        Pair(USERNAME, "mariam"),
-                        Pair(UID, FirebaseAuth.getInstance().uid.toString())
-                    ) //todo
-                    NavigationService.loadPage(this, ProfileActivity::class.java, extras)
                     true
                 }
                 else -> false
@@ -96,14 +102,14 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
 
     private fun loadData() {
         startLoader()
-        feedManager.loadAllPosts(this::updatePostList, this::handleError)
+        feedManager.loadUserSpecificPosts(uid, this::updatePostList, this::handleError)
     }
 
     private fun updatePostList(posts: ArrayList<NewsFeedItem>?): Boolean {
         stopLoader()
 
         if (posts == null) {
-            showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
+            Utils.showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
         } else {
             adapter.list = posts
             adapter.notifyDataSetChanged()
@@ -113,7 +119,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
     }
 
     override fun handleError(err: String): Boolean {
-        showWarning(err, findViewById(R.id.call_button))
+        Utils.showWarning(err, findViewById(R.id.call_button))
         return true
     }
 }

@@ -13,6 +13,7 @@ class AuthenticationService {
             "android.resource://ge.mchkhaidze.safetynet/drawable/profile_pic"
 
         fun signUp(
+            username: String,
             email: String,
             password: String,
             actionAfterLogged: () -> Boolean,
@@ -31,8 +32,13 @@ class AuthenticationService {
                         "SignUp",
                         "User created with credentials: ${it.result!!.user!!.uid}, $email, $password"
                     )
+
                     uploadUserInformation(
-                        "user_" + (0..1000000000).random(),
+                        if (username == "") {
+                            "user_" + (0..1000000000).random()
+                        } else {
+                            username
+                        },
                         null,
                         "",
                         DEFAULT_RADIUS,

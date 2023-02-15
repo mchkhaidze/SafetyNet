@@ -6,14 +6,22 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/appMainColor">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/appMainColor"
             app:title="SafetyNet"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_user"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            app:title="user"
             app:titleCentered="true"
             app:titleTextColor="@color/white" />
 
@@ -38,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="84dp"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="100dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_feed_recycler_view"
