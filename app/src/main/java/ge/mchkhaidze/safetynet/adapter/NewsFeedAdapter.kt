@@ -35,39 +35,31 @@ class NewsFeedAdapter : RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
         val post = list[position]
 
         Glide.with(holder.itemView.context)
-            .load("https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/images%2Fd4d71bb0-aa09-42cc-8c8b-3e695d6582ee?alt=media&token=f63837c6-8b2d-4479-a21c-74557ce7b801")
+            .load(post.userImage)
             .into(holder.newsFeedUserPhoto)
 
         holder.newsFeedUsername.text = post.userName
         holder.newsFeedPostDate.text = post.createDate
-        var tmp = 0
-        if (position == 0) {
-            tmp = 2
-            holder.viewPager.adapter = MediaPagerAdapter(
-                listOf(
-                    "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/images%2Fd4d71bb0-aa09-42cc-8c8b-3e695d6582ee?alt=media&token=f63837c6-8b2d-4479-a21c-74557ce7b801",
-                    "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/images%2F6d168ef7-f466-46ef-8cbb-de7970fee001?alt=media&token=9dfb10f9-2056-4178-94bc-c93f073c0679"
-                )
-            )
-        } else {
-            holder.viewPager.adapter = MediaPagerAdapter(listOf())
-        }
-
-        holder.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(pagePosition: Int) {
-                super.onPageSelected(pagePosition)
-                if (tmp > 1) {
-                    val text = "" + (pagePosition + 1) + "/" + tmp
-                    holder.countView.text = text
-                    holder.countView.visibility = View.VISIBLE
-                }
-            }
-        })
         holder.newsFeedDesc.text = post.description
         holder.newsFeedDesc.setOnClickListener {
             isTextExpanded = !isTextExpanded
             holder.newsFeedDesc.maxLines = if (isTextExpanded) Integer.MAX_VALUE else 2
         }
+
+        holder.viewPager.adapter = MediaPagerAdapter(post.resources)
+
+        holder.viewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(pagePosition: Int) {
+                super.onPageSelected(pagePosition)
+                if (post.resources.size > 1) {
+                    val text = "" + (pagePosition + 1) + "/" + post.resources.size
+                    holder.countView.text = text
+                    holder.countView.visibility = View.VISIBLE
+                }
+            }
+        })
+
     }
 
     override fun getItemCount() = list.size

@@ -1,53 +1,54 @@
 package ge.mchkhaidze.safetynet.service
 
 import com.google.firebase.database.*
+import ge.mchkhaidze.safetynet.model.NewsFeedItem
+import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.CREATE_DATE
+import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.DESCRIPTION
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.POSTS
+import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.TIMESTAMP
 
 class NewsFeedService {
 
-    private val limit = 5
-    var lastNode: String? = ""
-
-    fun lazyLoadPosts(
-        updateData: (uid: String?, userImage: String?, username: String?, image: String?, description: String?, date: String?) -> Boolean,
+    fun loadPosts(
+        updateData: (data: ArrayList<NewsFeedItem>?) -> Boolean,
         handleError: (String) -> Boolean
     ) {
         val query: Query
         try {
-            query = if (lastNode == "") {
-                FirebaseDatabase.getInstance().reference
-                    .child(POSTS)
-                    .orderByChild("create_date")
-                    .limitToFirst(limit)
-            } else {
-                FirebaseDatabase.getInstance().reference
-                    .child(POSTS)
-                    .orderByChild("create_date")
-                    .startAfter(lastNode)
-                    .limitToFirst(limit)
-            }
+            query = FirebaseDatabase.getInstance().reference
+                .child(POSTS)
+                .orderByChild(TIMESTAMP)
         } catch (ex: Exception) {
             handleError("Data is not available")
             return
         }
 
-        query.addValueEventListener(object : ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.children.count() == 0) {
-                    updateData(null, null, null, null, null, null)
-                }
+                    updateData(null)
+                } else {
 
-                for (i in snapshot.children) {
-                    val uid = i.key
-                    val hMap = i.value as HashMap<String, String>
-                    val userImage = hMap["user_image"]
-                    val username = hMap["username"]
-                    val image = hMap["resource"]
-                    val desc = hMap["description"]
-                    val date = hMap["create_date"]
-                    lastNode = username
-                    updateData(uid, userImage, username, image, desc, date)
+                    val list: ArrayList<NewsFeedItem> = ArrayList()
+
+                    for (i in snapshot.children) {
+                        val hMap = i.value as HashMap<*, *>
+
+                        list.add(
+                            NewsFeedItem(
+                                "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/profile_pic.png?alt=media&token=6593d9d5-0565-4d7e-b0ed-9c4edf3dc114",
+                                "username",
+                                listOf(),
+                                hMap[DESCRIPTION] as String?,
+                                hMap[CREATE_DATE]!! as String,
+                                hMap[TIMESTAMP]!! as Long
+                            )
+                        ) //todo
+                    }
+
+                    val sorted = list.sortedWith(compareByDescending { it.timestamp })
+                    updateData(ArrayList(sorted))
                 }
             }
 

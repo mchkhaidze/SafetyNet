@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.ALERT
-import ge.mchkhaidze.safetynet.model.UserInfo.Companion.PHOTO
+import ge.mchkhaidze.safetynet.model.UserInfo.Companion.PHOTO_URL
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.RADIUS
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERNAME
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERS
@@ -81,7 +81,7 @@ class UserInfoService {
             val ref = FirebaseDatabase.getInstance().getReference("/$USERS/$uid")
             val userDetails = HashMap<String, Any>()
             userDetails[USERNAME] = username
-            userDetails[PHOTO] = photoUrl
+            userDetails[PHOTO_URL] = photoUrl
             userDetails[RADIUS] = radius
             userDetails[ALERT] = alert
             ref.setValue(userDetails)

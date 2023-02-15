@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,14 +23,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ge.mchkhaidze.safetynet.service.PostsService
 
 
-class NewPostFragment : BottomSheetDialogFragment() {
+class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
 
     companion object {
         private const val REQUEST_GALLERY_PERMISSION = 100
         private const val REQUEST_CAMERA_PERMISSION = 200
-        private const val REQUEST_CODE_LOCATION_PERMISSION = 300
     }
 
     private var resources: List<MediaStore.Files> = listOf()
@@ -106,9 +108,15 @@ class NewPostFragment : BottomSheetDialogFragment() {
                 val location: Pair<Double, Double>? = getCurrentLocation()
 
                 if (location != null) {
-                    val locationLat = location.first
-                    val locationLong = location.second
-                    // savePost(text, location, resources)
+                    PostsService.uploadPost(
+                        text.toString(),
+                        location,
+                        Utils.getFormattedDate(),
+                        System.currentTimeMillis(),
+                        resources,
+                        this::dismissFragment,
+                        this::handleError
+                    )
                     dismiss()
                 } else {
                     Utils.showWarning("Location permission is required", sendButton)
@@ -117,6 +125,15 @@ class NewPostFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun dismissFragment(): Boolean {
+        dismiss()
+        return true
+    }
+
+    override fun handleError(err: String): Boolean {
+        Utils.showWarning(err, description)
+        return true
+    }
 
     private fun openGalleryActivityForResult() {
         val intent =
@@ -195,6 +212,34 @@ class NewPostFragment : BottomSheetDialogFragment() {
             return null
         }
 
+        locationManager.requestLocationUpdates(
+            LocationManager.NETWORK_PROVIDER,
+            0,
+            0f,
+            object : LocationListener {
+                override fun onLocationChanged(location: Location) {}
+
+                override fun onProviderEnabled(provider: String) {}
+
+                override fun onProviderDisabled(provider: String) {}
+
+                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+            })
+
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            0,
+            0f,
+            object : LocationListener {
+                override fun onLocationChanged(location: Location) {}
+
+                override fun onProviderEnabled(provider: String) {}
+
+                override fun onProviderDisabled(provider: String) {}
+
+                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+            })
+
         val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 
         if (location != null) {
@@ -203,18 +248,5 @@ class NewPostFragment : BottomSheetDialogFragment() {
             return Pair(latitude, longitude)
         }
         return null
-    }
-
-    private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE_LOCATION_PERMISSION
-            )
-        }
     }
 }

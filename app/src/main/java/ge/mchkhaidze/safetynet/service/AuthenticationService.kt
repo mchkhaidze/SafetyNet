@@ -1,6 +1,5 @@
 package ge.mchkhaidze.safetynet.service
 
-import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_ALERT
@@ -32,10 +31,9 @@ class AuthenticationService {
                         "SignUp",
                         "User created with credentials: ${it.result!!.user!!.uid}, $email, $password"
                     )
-                    val imageUri: Uri = Uri.parse(DEFAULT_PHOTO)
                     uploadUserInformation(
                         "user_" + (0..1000000000).random(),
-                        imageUri,
+                        null,
                         "",
                         DEFAULT_RADIUS,
                         DEFAULT_ALERT,

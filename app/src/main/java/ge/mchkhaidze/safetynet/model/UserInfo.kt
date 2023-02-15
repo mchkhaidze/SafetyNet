@@ -11,7 +11,7 @@ data class UserInfo(
     companion object {
         const val USERS = "users"
         const val USERNAME = "username"
-        const val PHOTO = "photo"
+        const val PHOTO_URL = "photo_url"
         const val RADIUS = "radius"
         const val ALERT = "alert"
 

@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ge.mchkhaidze.safetynet.ErrorHandler
@@ -18,7 +19,6 @@ import ge.mchkhaidze.safetynet.Utils.Companion.startLoader
 import ge.mchkhaidze.safetynet.Utils.Companion.stopLoader
 import ge.mchkhaidze.safetynet.adapter.NewsFeedAdapter
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
-import ge.mchkhaidze.safetynet.service.NavigationService
 import ge.mchkhaidze.safetynet.service.NewsFeedService
 
 class NewsFeedActivity : BaseActivity(), ErrorHandler {
@@ -45,6 +45,14 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
     }
 
     private fun setUpRV() {
+
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = true
+            loadData()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         val recyclerView = findViewById<RecyclerView>(R.id.news_feed_recycler_view)
         recyclerView.adapter = adapter
     }
@@ -79,25 +87,17 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
 
     private fun loadData() {
         startLoader()
-        feedManager.lazyLoadPosts(this::updateUserList, this::handleError)
-//        adapter.notifyItemRangeInserted(0, 5)
+        feedManager.loadPosts(this::updatePostList, this::handleError)
     }
 
-    private fun updateUserList(
-        uid: String?,
-        userImage: String?,
-        username: String?,
-        image: String?,
-        description: String?,
-        date: String?
-    ): Boolean {
+    private fun updatePostList(posts: ArrayList<NewsFeedItem>?): Boolean {
         stopLoader()
 
-        if (uid != null) {
-            adapter.list.add(NewsFeedItem("userImage!!", username!!, image, description, date!!))
-            adapter.notifyItemInserted(0)
-        } else if (adapter.list.isEmpty()) {
+        if (posts == null) {
             showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
+        } else {
+            adapter.list = posts
+            adapter.notifyDataSetChanged()
         }
 
         return true

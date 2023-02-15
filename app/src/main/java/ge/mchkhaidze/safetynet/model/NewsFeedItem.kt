@@ -3,11 +3,18 @@ package ge.mchkhaidze.safetynet.model
 data class NewsFeedItem(
     var userImage: String,
     var userName: String,
-    var image: String?,
+    var resources: List<String>,
     var description: String?,
-    var createDate: String
+    var createDate: String,
+    var timestamp: Long//todo location
 ) {
     companion object {
         const val POSTS = "posts"
+        const val CREATE_DATE = "create_date"
+        const val DESCRIPTION = "description"
+        const val LATITUDE = "latitude"
+        const val LONGITUDE = "longitude"
+        const val UID = "uid"
+        const val TIMESTAMP = "timestamp"
     }
 }
