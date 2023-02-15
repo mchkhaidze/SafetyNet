@@ -1,100 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".Settings">
+    android:orientation="vertical"
+    tools:context=".activity.SettingsActivity">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/settings"
-        android:textColor="@color/black"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/appMainColor"
+            app:title="SafetyNet"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:labelFor="@+id/username"
-            android:text="@string/username"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_actions"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/appMainColor"
+            app:menu="@menu/app_bar_menu"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
+            app:navigationIconTint="@color/white"
+            app:title="Settings"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white">
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:autofillHints="@string/username"
-            android:inputType="text"
-            tools:text="bla" />
-    </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        tools:ignore="RtlSymmetry">
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/slider"
-            android:text="@string/distance"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/slider"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:stepSize="1"
-            android:value="10"
-            android:valueFrom="0"
-            android:valueTo="50"
-            app:labelBehavior="visible"
-            app:labelStyle="@style/label_style"
-            app:thumbColor="@color/appMainColor"
-            app:trackColor="@color/appSecondaryColor"/>
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:gravity="center"
-        android:text="@string/alerts"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:theme="@style/switch_style"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:switchPadding="70dp" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/settings_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

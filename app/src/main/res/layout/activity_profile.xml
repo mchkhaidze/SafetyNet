@@ -21,6 +21,7 @@
             android:id="@+id/toolbar_user"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            app:menu="@menu/profile_app_bar_menu"
             app:title="user"
             app:titleCentered="true"
             app:titleTextColor="@color/white" />
@@ -45,8 +46,8 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="84dp"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="100dp"
+        android:paddingBottom="84dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_feed_recycler_view"

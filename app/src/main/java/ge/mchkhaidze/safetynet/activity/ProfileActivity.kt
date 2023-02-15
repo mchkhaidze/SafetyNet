@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import ge.mchkhaidze.safetynet.ErrorHandler
 import ge.mchkhaidze.safetynet.NewPostFragment
 import ge.mchkhaidze.safetynet.R
@@ -31,6 +32,7 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
     private val feedManager = NewsFeedService()
     private var adapter = NewsFeedAdapter(this)
     private lateinit var uid: String
+    private lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +47,35 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
     }
 
     private fun setUpToolBar() {
+        toolbar = findViewById(R.id.toolbar_user)
         val extras = intent.extras
         if (extras != null) {
             uid = extras.getString(UID).toString()
-            findViewById<MaterialToolbar>(R.id.toolbar_user).title = extras.getString(USERNAME)
+            toolbar.title = extras.getString(USERNAME)
+        }
+
+        if (uid == FirebaseAuth.getInstance().uid.toString()) {
+
+            toolbar.menu.findItem(R.id.edit).isVisible = true
+            toolbar.menu.findItem(R.id.log_out).isVisible = true
+
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit -> {
+                        NavigationService.loadPage(this, SettingsActivity::class.java)
+                        true
+                    }
+                    R.id.log_out -> {
+                        FirebaseAuth.getInstance().signOut()
+                        NavigationService.loadPage(this, SignInActivity::class.java)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        } else {
+            toolbar.menu.getItem(R.id.edit).isVisible = false
+            toolbar.menu.getItem(R.id.log_out).isVisible = false
         }
     }
 

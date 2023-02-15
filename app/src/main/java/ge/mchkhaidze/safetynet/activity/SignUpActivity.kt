@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.TextView
 import ge.mchkhaidze.safetynet.ErrorHandler
 import ge.mchkhaidze.safetynet.R
-import ge.mchkhaidze.safetynet.Settings
 import ge.mchkhaidze.safetynet.Utils
 import ge.mchkhaidze.safetynet.Utils.Companion.hideSoftKeyboard
 import ge.mchkhaidze.safetynet.service.AuthenticationService
@@ -58,7 +57,13 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
             when {
                 email == "" -> Utils.showWarning(getString(R.string.empty_email), signUpButton)
                 pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signUpButton)
-                else -> AuthenticationService.signUp(username, email, pass, this::goToSettings, this::handleError)
+                else -> AuthenticationService.signUp(
+                    username,
+                    email,
+                    pass,
+                    this::goToSettings,
+                    this::handleError
+                )
             }
         }
     }
@@ -90,7 +95,7 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
     }
 
     private fun goToSettings(): Boolean {
-        NavigationService.loadPage(this, Settings::class.java)
+        NavigationService.loadPage(this, NewsFeedActivity::class.java)
         return false
     }
 

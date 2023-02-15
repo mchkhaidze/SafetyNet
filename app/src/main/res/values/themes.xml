@@ -27,4 +27,11 @@
     <style name="Theme.SafetyNet.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.SafetyNet.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="preferenceTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/appMainColor</item>
+        <item name="colorPrimaryDark">@color/appMainColor</item>
+        <item name="colorAccent">@color/appMainColor</item>
+    </style>
+
 </resources>

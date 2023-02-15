@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Personal information">
+
+        <Preference
+            android:key="user_photo"
+            android:layout="@layout/image_preference_layout"
+            android:selectable="true"
+            android:title="Edit photo"
+            app:persistent="false" />
+
+        <EditTextPreference
+            android:key="username"
+            android:persistent="false"
+            android:summary="Change your new username"
+            android:title="Username" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Configurations">
+
+        <SeekBarPreference
+            android:defaultValue="10"
+            android:key="radius"
+            android:max="100"
+            android:persistent="false"
+            android:summary="Distance preference for alerts"
+            android:title="Distance"
+            app:showSeekBarValue="true" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="alerts"
+            android:persistent="false"
+            android:summary="Receive important alerts"
+            android:title="Alerts" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
