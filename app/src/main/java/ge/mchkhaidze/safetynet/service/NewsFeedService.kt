@@ -46,7 +46,7 @@ class NewsFeedService {
                                 hMap[CREATE_DATE]!! as String,
                                 hMap[TIMESTAMP]!! as Long
                             )
-                        ) //todo
+                        ) //todo get username, image and resources
                     }
 
                     val sorted = list.sortedWith(compareByDescending { it.timestamp })
@@ -98,7 +98,7 @@ class NewsFeedService {
                                     hMap[CREATE_DATE]!! as String,
                                     hMap[TIMESTAMP]!! as Long
                                 )
-                            ) //todo
+                            ) //todo get username, image and resources
                         }
                     }
 

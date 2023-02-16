@@ -16,7 +16,6 @@ data class UserInfo(
         const val ALERT = "alert"
 
         const val DEFAULT_RADIUS = 20
-        const val DEFAULT_LOCATION = "Tbilisi" //todo
         const val DEFAULT_ALERT = true
     }
 }

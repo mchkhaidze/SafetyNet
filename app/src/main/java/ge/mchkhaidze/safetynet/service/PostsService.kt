@@ -22,7 +22,7 @@ class PostsService {
             location: Pair<Double, Double>,
             date: String,
             timeStamp: Long,
-            resources: List<MediaStore.Files>, //todo
+            resources: List<MediaStore.Files>, //todo save uploaded resources
             actionAfter: (() -> Boolean)?,
             handleError: (String) -> Boolean
         ) {

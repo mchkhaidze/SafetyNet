@@ -7,7 +7,7 @@ data class NewsFeedItem(
     var resources: List<String>,
     var description: String?,
     var createDate: String,
-    var timestamp: Long//todo location
+    var timestamp: Long//todo add location (to show in posts)
 ) {
     companion object {
         const val POSTS = "posts"

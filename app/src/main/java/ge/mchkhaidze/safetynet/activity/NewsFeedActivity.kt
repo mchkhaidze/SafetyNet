@@ -69,6 +69,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
                     true
                 }
                 R.id.map -> {
+                    NavigationService.loadPage(this, MapsActivity::class.java)
                     true
                 }
                 R.id.add_post -> {
@@ -80,7 +81,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
                     val extras = mapOf(
                         Pair(USERNAME, "mariam"),
                         Pair(UID, FirebaseAuth.getInstance().uid.toString())
-                    ) //todo
+                    ) //todo set correct username
                     NavigationService.loadPage(this, ProfileActivity::class.java, extras)
                     true
                 }

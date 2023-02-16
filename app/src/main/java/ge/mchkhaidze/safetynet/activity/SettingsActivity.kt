@@ -26,7 +26,7 @@ class SettingsActivity : BaseActivity() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_done -> {
-                    //todo
+                    //todo save updated preferences
                     finish()
                     true
                 }

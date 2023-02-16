@@ -107,6 +107,7 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
                     true
                 }
                 R.id.map -> {
+                    NavigationService.loadPage(this, MapsActivity::class.java)
                     true
                 }
                 R.id.add_post -> {
