@@ -49,4 +49,8 @@
     <string name="done">Done</string>
     <string name="log_out">log out</string>
     <string name="edit">edit</string>
+    <string name="like">like</string>
+    <string name="dislike">dislike</string>
+    <string name="pin_location">pin location</string>
+    <string name="report">report</string>
 </resources>
