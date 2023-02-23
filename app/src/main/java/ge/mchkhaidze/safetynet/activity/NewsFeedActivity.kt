@@ -113,7 +113,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         stopLoader()
 
         if (posts == null) {
-            showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
+            handleError(getString(R.string.no_data))
         } else {
             adapter.list = posts
             adapter.notifyDataSetChanged()
@@ -126,13 +126,13 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         if (user != null) {
             currUser = user
         } else {
-            showWarning("error loading user", findViewById(R.id.call_button))
+            handleError("error loading user")
         }
         return true
     }
 
     override fun handleError(err: String): Boolean {
-        showWarning(err, findViewById(R.id.call_button))
+        showWarning(err, findViewById(R.id.call_button), findViewById(R.id.call_button))
         return true
     }
 }

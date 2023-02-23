@@ -151,7 +151,7 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
         stopLoader()
 
         if (posts == null) {
-            Utils.showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
+            handleError(getString(R.string.no_data))
         } else {
             adapter.list = posts
             adapter.notifyDataSetChanged()
@@ -164,13 +164,13 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
         if (user != null) {
             currUser = user
         } else {
-            Utils.showWarning("error loading user", findViewById(R.id.call_button))
+            handleError("error loading user")
         }
         return true
     }
 
     override fun handleError(err: String): Boolean {
-        Utils.showWarning(err, findViewById(R.id.call_button))
+        Utils.showWarning(err, findViewById(R.id.call_button), findViewById(R.id.call_button))
         return true
     }
 }

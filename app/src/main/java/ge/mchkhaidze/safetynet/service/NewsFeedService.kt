@@ -19,7 +19,19 @@ class NewsFeedService {
         val resourcesRef = FirebaseDatabase.getInstance().getReference("resources")
         val list: MutableList<NewsFeedItem> = ArrayList()
 
-        val childEventListener = object : ChildEventListener {
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.children.count() == 0) {
+                    updateData(null)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle errors here
+            }
+        })
+
+        postsRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)
                 var item: NewsFeedItem?
@@ -83,9 +95,7 @@ class NewsFeedService {
             override fun onCancelled(databaseError: DatabaseError) {
                 handleError(databaseError.message)
             }
-        }
-
-        postsRef.addChildEventListener(childEventListener)
+        })
 
 //        val query: Query
 //        try {
@@ -147,7 +157,19 @@ class NewsFeedService {
         val resourcesRef = FirebaseDatabase.getInstance().getReference("resources")
         val list: MutableList<NewsFeedItem> = ArrayList()
 
-        val childEventListener = object : ChildEventListener {
+        postsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.children.count() == 0) {
+                    updateData(null)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle errors here
+            }
+        })
+
+        postsRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)
                 var item: NewsFeedItem?
@@ -211,9 +233,8 @@ class NewsFeedService {
             override fun onCancelled(databaseError: DatabaseError) {
                 handleError(databaseError.message)
             }
-        }
+        })
 
-        postsRef.addChildEventListener(childEventListener)
 //        val query: Query
 //        try {
 //            query = FirebaseDatabase.getInstance().reference

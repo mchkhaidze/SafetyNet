@@ -63,6 +63,15 @@ class NewsFeedAdapter(private val context: Context) :
         holder.newsFeedUsername.text = post.userName
         holder.newsFeedPostDate.text = post.createDate
         holder.newsFeedPostAddr.text = post.address
+
+        holder.newsFeedPostAddr.setOnClickListener {
+            val extras = mapOf(
+                Pair("lat", post.latitude),
+                Pair("lng", post.longitude)
+            )
+            NavigationService.loadPage(context, MapsActivity::class.java, extras)
+        }
+
         holder.newsFeedDesc.text = post.description
         if (post.description == null || post.description == "") {
             holder.newsFeedDesc.visibility = View.GONE

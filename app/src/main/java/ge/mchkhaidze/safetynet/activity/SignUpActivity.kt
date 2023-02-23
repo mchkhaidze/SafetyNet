@@ -55,8 +55,8 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
             val pass = passwordField.text.toString()
 
             when {
-                email == "" -> Utils.showWarning(getString(R.string.empty_email), signUpButton)
-                pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signUpButton)
+                email == "" -> handleError(getString(R.string.empty_email))
+                pass == "" -> handleError(getString(R.string.empty_pass))
                 else -> AuthenticationService.signUp(
                     username,
                     email,

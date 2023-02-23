@@ -53,8 +53,8 @@ class SignInActivity : BaseActivity(), ErrorHandler {
             val pass = passwordField.text.toString()
 
             when {
-                email == "" -> Utils.showWarning(getString(R.string.empty_email), signInButton)
-                pass == "" -> Utils.showWarning(getString(R.string.empty_pass), signInButton)
+                email == "" -> handleError(getString(R.string.empty_email))
+                pass == "" -> handleError(getString(R.string.empty_pass))
                 else -> AuthenticationService.logIn(email, pass, this::goToFeed, this::handleError)
             }
         }
