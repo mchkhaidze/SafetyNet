@@ -43,6 +43,7 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
         setUpToolBar()
         setUpRV()
         setUpNavBar()
+        startLoader()
         loadData()
     }
 
@@ -74,8 +75,8 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
                 }
             }
         } else {
-            toolbar.menu.getItem(R.id.edit).isVisible = false
-            toolbar.menu.getItem(R.id.log_out).isVisible = false
+            toolbar.menu.findItem(R.id.edit).isVisible = false
+            toolbar.menu.findItem(R.id.log_out).isVisible = false
         }
     }
 
@@ -129,7 +130,6 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
     }
 
     private fun loadData() {
-        startLoader()
         feedManager.loadUserSpecificPosts(uid, this::updatePostList, this::handleError)
     }
 

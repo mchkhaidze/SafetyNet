@@ -41,6 +41,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
 
         setUpRV()
         setUpNavBar()
+        startLoader()
         loadData()
     }
 
@@ -97,7 +98,6 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
     }
 
     private fun loadData() {
-        startLoader()
         feedManager.loadAllPosts(this::updatePostList, this::handleError)
     }
 
@@ -107,7 +107,6 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         if (posts == null) {
             showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
         } else {
-            Log.d("blablalist", posts.toString())
             adapter.list = posts
             adapter.notifyDataSetChanged()
         }
