@@ -13,7 +13,7 @@
         <EditTextPreference
             android:key="username"
             android:persistent="false"
-            android:summary="Change your new username"
+            android:summary="Change your username"
             android:title="Username" />
 
     </PreferenceCategory>

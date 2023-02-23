@@ -4,6 +4,7 @@ import android.provider.MediaStore
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.ADDRESS
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.CREATE_DATE
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.DESCRIPTION
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.LATITUDE
@@ -20,6 +21,7 @@ class PostsService {
         fun uploadPost(
             description: String,
             location: Pair<Double, Double>,
+            address: String,
             date: String,
             timeStamp: Long,
             resources: List<MediaStore.Files>, //todo save uploaded resources
@@ -36,8 +38,10 @@ class PostsService {
             newsFeedItem[DESCRIPTION] = description
             newsFeedItem[CREATE_DATE] = date
             newsFeedItem[TIMESTAMP] = timeStamp
-            newsFeedItem[LATITUDE] = location.first
-            newsFeedItem[LONGITUDE] = location.second
+            newsFeedItem[LATITUDE] = location.first.toString()
+            newsFeedItem[LONGITUDE] = location.second.toString()
+            newsFeedItem[ADDRESS] = address
+
             ref.setValue(newsFeedItem)
                 .addOnSuccessListener {
                     Log.d("Post", "added: $postId")

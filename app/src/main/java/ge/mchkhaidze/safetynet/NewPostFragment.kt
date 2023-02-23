@@ -6,9 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -24,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ge.mchkhaidze.safetynet.service.PostsService
+import java.util.*
 
 
 class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
@@ -82,18 +81,35 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
         parentView = requireActivity().window.decorView
         globalLayoutListener = OnGlobalLayoutListener {
             val rect = Rect()
-            parentView.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = parentView.rootView.height
+            view?.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = view?.rootView?.height ?: 0
             val keypadHeight = screenHeight - rect.bottom
 
-            val bottomSheet = dialog!!.findViewById<View>(R.id.fragment) as FrameLayout
+            val fragmentView =
+                dialog?.findViewById<View>(R.id.fragment) ?: return@OnGlobalLayoutListener
+            val layoutParams = fragmentView.layoutParams as ViewGroup.LayoutParams
             if (keypadHeight > screenHeight * 0.15) {
-                bottomSheet.layoutParams.height = (screenHeight - keypadHeight).toInt()
+                layoutParams.height = (screenHeight - keypadHeight).toInt()
             } else {
-                bottomSheet.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
+                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             }
-            bottomSheet.requestLayout()
+            fragmentView.layoutParams = layoutParams
         }
+
+//        globalLayoutListener = OnGlobalLayoutListener {
+//            val rect = Rect()
+//            parentView.getWindowVisibleDisplayFrame(rect)
+//            val screenHeight = parentView.rootView.height
+//            val keypadHeight = screenHeight - rect.bottom
+//
+//            val bottomSheet = dialog!!.findViewById<View>(R.id.fragment) as FrameLayout
+//            if (keypadHeight > screenHeight * 0.15) {
+//                bottomSheet.layoutParams.height = (screenHeight - keypadHeight).toInt()
+//            } else {
+//                bottomSheet.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
+//            }
+//            bottomSheet.requestLayout()
+//        }
         parentView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
 
         setUpdButton()
@@ -107,10 +123,25 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
                 val text = description.text
                 val location: Pair<Double, Double>? = getCurrentLocation()
 
+                var addressString = ""
+                if (location != null) {
+                    addressString = try {
+                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        val addresses: List<Address> =
+                            geocoder.getFromLocation(location.first, location.second, 1)!!
+                        val address = addresses[0]
+                        address.getAddressLine(0)
+                    } catch (ex: Exception) {
+                        ""
+                    }
+
+                }
+
                 if (location != null) {
                     PostsService.uploadPost(
                         text.toString(),
                         location,
+                        addressString,
                         Utils.getFormattedDate(),
                         System.currentTimeMillis(),
                         resources,

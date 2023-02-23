@@ -39,12 +39,12 @@ class MapsActivity : BaseActivity(), OnMapReadyCallback {
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         val extras = intent.extras
-        if (extras != null) {
-            val latLng = LatLng(extras.getDouble("lat"), extras.getDouble("lng"))
+        if (extras?.getString("lat") != null && extras.getString("lng") != null) {
+            val latLng =
+                LatLng(extras.getString("lat")!!.toDouble(), extras.getString("lng")!!.toDouble())
             map.addMarker(MarkerOptions().position(latLng))
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         } else {
-
 
             if (ActivityCompat.checkSelfPermission(
                     this,

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.transition.Slide
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import androidx.core.content.ContextCompat
@@ -106,6 +107,7 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         if (posts == null) {
             showWarning(getString(R.string.no_data), findViewById(R.id.call_button))
         } else {
+            Log.d("blablalist", posts.toString())
             adapter.list = posts
             adapter.notifyDataSetChanged()
         }

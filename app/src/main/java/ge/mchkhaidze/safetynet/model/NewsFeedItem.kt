@@ -4,10 +4,13 @@ data class NewsFeedItem(
     var userId: String,
     var userImage: String,
     var userName: String,
-    var resources: List<String>,
+    var resources: MutableList<String>,
     var description: String?,
     var createDate: String,
-    var timestamp: Long//todo add location (to show in posts)
+    var timestamp: Long,
+    var latitude: String,
+    var longitude: String,
+    var address: String
 ) {
     companion object {
         const val POSTS = "posts"
@@ -15,6 +18,7 @@ data class NewsFeedItem(
         const val DESCRIPTION = "description"
         const val LATITUDE = "latitude"
         const val LONGITUDE = "longitude"
+        const val ADDRESS = "address"
         const val UID = "uid"
         const val TIMESTAMP = "timestamp"
     }

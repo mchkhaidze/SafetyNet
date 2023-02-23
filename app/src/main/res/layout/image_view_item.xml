@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/resource"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:contentDescription="@string/resource"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
