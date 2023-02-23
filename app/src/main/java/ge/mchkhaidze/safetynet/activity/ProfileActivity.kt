@@ -22,9 +22,11 @@ import ge.mchkhaidze.safetynet.Utils.Companion.stopLoader
 import ge.mchkhaidze.safetynet.adapter.NewsFeedAdapter
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.UID
+import ge.mchkhaidze.safetynet.model.User
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERNAME
 import ge.mchkhaidze.safetynet.service.NavigationService
 import ge.mchkhaidze.safetynet.service.NewsFeedService
+import ge.mchkhaidze.safetynet.service.UserInfoService
 
 class ProfileActivity : BaseActivity(), ErrorHandler {
 
@@ -33,12 +35,19 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
     private var adapter = NewsFeedAdapter(this)
     private lateinit var uid: String
     private lateinit var toolbar: MaterialToolbar
+    private lateinit var currUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         window.exitTransition = Slide(Gravity.BOTTOM)
+
+        UserInfoService.getUserInfo(
+            FirebaseAuth.getInstance().uid ?: "",
+            this::setCurrentUser,
+            this::handleError
+        )
 
         setUpToolBar()
         setUpRV()
@@ -117,6 +126,11 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
                     true
                 }
                 R.id.profile -> {
+                    val extraParams = mapOf(
+                        Pair(USERNAME, currUser.username!!),
+                        Pair(UID, FirebaseAuth.getInstance().uid.toString())
+                    )
+                    NavigationService.loadPage(this, ProfileActivity::class.java, extraParams)
                     true
                 }
                 else -> false
@@ -143,6 +157,15 @@ class ProfileActivity : BaseActivity(), ErrorHandler {
             adapter.notifyDataSetChanged()
         }
 
+        return true
+    }
+
+    private fun setCurrentUser(user: User?): Boolean {
+        if (user != null) {
+            currUser = user
+        } else {
+            Utils.showWarning("error loading user", findViewById(R.id.call_button))
+        }
         return true
     }
 

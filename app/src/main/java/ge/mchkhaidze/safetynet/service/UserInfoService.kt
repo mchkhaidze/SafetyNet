@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import ge.mchkhaidze.safetynet.model.User
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.ALERT
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.PHOTO_URL
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.RADIUS
@@ -53,21 +54,21 @@ class UserInfoService {
                 }
         }
 
-//        fun getInfo(processInfo: (String, String) -> Boolean, handleError: (String) -> Boolean) {
-//            val uid = FirebaseAuth.getInstance().uid ?: ""
-//            val ref = FirebaseDatabase.getInstance().getReference("/$USERS/$uid")
-//            ref.get()
-//                .addOnSuccessListener {
-//                    Log.d("prof", "$uid $it")
-//                    val hMap = it.value as HashMap<Any, Any>
-//                    val username = hMap[USERNAME]!! as String
-//                    val photo = hMap[PHOTO]!! as String
-//                    processInfo(username, photo)
-//                }
-//                .addOnFailureListener {
-//                    it.message?.let { it1 -> handleError(it1) }
-//                }
-//        }
+        fun getUserInfo(
+            uid: String,
+            process: (User?) -> Boolean,
+            handleError: (String) -> Boolean
+        ) {
+            val ref = FirebaseDatabase.getInstance().getReference("/$USERS/$uid")
+            ref.get()
+                .addOnSuccessListener {
+                    val user = it.getValue(User::class.java)
+                    process(user)
+                }
+                .addOnFailureListener {
+                    it.message?.let { it1 -> handleError(it1) }
+                }
+        }
 
         private fun uploadInfo(
             username: String,

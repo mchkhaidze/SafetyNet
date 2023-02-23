@@ -9,9 +9,6 @@ import ge.mchkhaidze.safetynet.service.UserInfoService.Companion.uploadUserInfor
 class AuthenticationService {
     companion object {
 
-        private const val DEFAULT_PHOTO =
-            "android.resource://ge.mchkhaidze.safetynet/drawable/profile_pic"
-
         fun signUp(
             username: String,
             email: String,

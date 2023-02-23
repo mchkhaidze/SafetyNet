@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.transition.Slide
-import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import androidx.core.content.ContextCompat
@@ -22,15 +21,18 @@ import ge.mchkhaidze.safetynet.Utils.Companion.stopLoader
 import ge.mchkhaidze.safetynet.adapter.NewsFeedAdapter
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.UID
+import ge.mchkhaidze.safetynet.model.User
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERNAME
 import ge.mchkhaidze.safetynet.service.NavigationService
 import ge.mchkhaidze.safetynet.service.NewsFeedService
+import ge.mchkhaidze.safetynet.service.UserInfoService
 
 class NewsFeedActivity : BaseActivity(), ErrorHandler {
 
     private val emergencyNumber = "tel:112"
     private val feedManager = NewsFeedService()
     private var adapter = NewsFeedAdapter(this)
+    private lateinit var currUser: User
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,12 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
         setContentView(R.layout.activity_news_feed)
 
         window.exitTransition = Slide(Gravity.BOTTOM)
+
+        UserInfoService.getUserInfo(
+            FirebaseAuth.getInstance().uid ?: "",
+            this::setCurrentUser,
+            this::handleError
+        )
 
         setUpRV()
         setUpNavBar()
@@ -81,9 +89,9 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
                 }
                 R.id.profile -> {
                     val extras = mapOf(
-                        Pair(USERNAME, "mariam"),
+                        Pair(USERNAME, currUser.username!!),
                         Pair(UID, FirebaseAuth.getInstance().uid.toString())
-                    ) //todo set correct username
+                    )
                     NavigationService.loadPage(this, ProfileActivity::class.java, extras)
                     true
                 }
@@ -111,6 +119,15 @@ class NewsFeedActivity : BaseActivity(), ErrorHandler {
             adapter.notifyDataSetChanged()
         }
 
+        return true
+    }
+
+    private fun setCurrentUser(user: User?): Boolean {
+        if (user != null) {
+            currUser = user
+        } else {
+            showWarning("error loading user", findViewById(R.id.call_button))
+        }
         return true
     }
 

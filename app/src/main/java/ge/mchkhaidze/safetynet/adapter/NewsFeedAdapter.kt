@@ -21,6 +21,9 @@ import ge.mchkhaidze.safetynet.service.NavigationService
 class NewsFeedAdapter(private val context: Context) :
     RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
 
+
+    private val defaultPhoto =
+        "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/profile_pic.png?alt=media&token=6593d9d5-0565-4d7e-b0ed-9c4edf3dc114"
     var list: ArrayList<NewsFeedItem> = ArrayList()
     private var isTextExpanded = false
 
@@ -48,8 +51,13 @@ class NewsFeedAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = list[position]
 
+        val imageUrl = if (post.userImage != "") {
+            post.userImage
+        } else {
+            defaultPhoto
+        }
         Glide.with(holder.itemView.context)
-            .load(post.userImage)
+            .load(imageUrl)
             .into(holder.newsFeedUserPhoto)
 
         holder.newsFeedUsername.text = post.userName

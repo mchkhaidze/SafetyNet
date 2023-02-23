@@ -24,7 +24,7 @@
             android:clickable="true"
             android:focusable="true"
             app:cardCornerRadius="@dimen/poster_photo_size"
-            app:cardElevation="0dp"
+            app:cardElevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
