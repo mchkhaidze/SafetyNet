@@ -1,5 +1,6 @@
 package ge.mchkhaidze.safetynet.service
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
 import ge.mchkhaidze.safetynet.model.NewsFeedItem.Companion.POSTS
@@ -15,135 +16,8 @@ class NewsFeedService {
     ) {
 
         val postsRef = FirebaseDatabase.getInstance().getReference(POSTS)
-        val usersRef = FirebaseDatabase.getInstance().getReference("users")
-        val resourcesRef = FirebaseDatabase.getInstance().getReference("resources")
-        val list: MutableList<NewsFeedItem> = ArrayList()
 
-        postsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.children.count() == 0) {
-                    updateData(null)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors here
-            }
-        })
-
-        postsRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                val post = dataSnapshot.getValue(Post::class.java)
-                var item: NewsFeedItem?
-                val userRef = usersRef.child(post?.uid ?: "")
-                userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(userSnapshot: DataSnapshot) {
-                        val user = userSnapshot.getValue(User::class.java)
-
-                        item = NewsFeedItem(
-                            post?.uid!!,
-                            user?.photo_url!!,
-                            user.username!!,
-                            mutableListOf(),
-                            post.description,
-                            post.create_date!!,
-                            post.timestamp!!,
-                            post.latitude!!,
-                            post.longitude!!,
-                            post.address!!
-                        )
-
-                        val resourcesQuery =
-                            resourcesRef.orderByChild("post_id").equalTo(dataSnapshot.key)
-                        resourcesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                for (resourceSnapshot in dataSnapshot.children) {
-                                    val resource = resourceSnapshot.getValue(Resource::class.java)
-                                    if (resource != null) {
-                                        item?.resources?.add(resource.resource_url!!)
-                                    }
-                                }
-                                list.add(item!!)
-                                val sorted = list.sortedWith(compareByDescending { it.timestamp })
-                                updateData(ArrayList(sorted))
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {
-                                handleError(databaseError.message)
-                            }
-                        })
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        handleError(databaseError.message)
-                    }
-                })
-            }
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                // Handle changes to existing posts here
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                // Handle removal of posts here
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                // Handle changes to the order of posts here
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                handleError(databaseError.message)
-            }
-        })
-
-//        val query: Query
-//        try {
-//            query = FirebaseDatabase.getInstance().reference
-//                .child(POSTS)
-//                .orderByChild(TIMESTAMP)
-//        } catch (ex: Exception) {
-//            handleError("Data is not available")
-//            return
-//        }
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.children.count() == 0) {
-//                    updateData(null)
-//                } else {
-//
-//                    val list: ArrayList<NewsFeedItem> = ArrayList()
-//
-//                    for (i in snapshot.children) {
-//                        val hMap = i.value as HashMap<*, *>
-//
-//                        list.add(
-//                            NewsFeedItem(
-//                                hMap[UID] as String,
-//                                "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/profile_pic.png?alt=media&token=6593d9d5-0565-4d7e-b0ed-9c4edf3dc114",
-//                                "username",
-//                                listOf(),
-//                                hMap[DESCRIPTION] as String?,
-//                                hMap[CREATE_DATE]!! as String,
-//                                hMap[TIMESTAMP]!! as Long,
-//                                hMap[LATITUDE]!! as String,
-//                                hMap[LONGITUDE]!! as String,
-//                                hMap[ADDRESS]!! as String
-//                            )
-//                        )
-//                    }
-//
-//                    val sorted = list.sortedWith(compareByDescending { it.timestamp })
-//                    updateData(ArrayList(sorted))
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                handleError(error.message)
-//            }
-//        })
+        load(updateData, handleError, postsRef)
     }
 
     fun loadUserSpecificPosts(
@@ -153,6 +27,15 @@ class NewsFeedService {
     ) {
         val postsRef =
             FirebaseDatabase.getInstance().getReference(POSTS).orderByChild("uid").equalTo(uid)
+
+        load(updateData, handleError, postsRef)
+    }
+
+    private fun load(
+        updateData: (data: ArrayList<NewsFeedItem>?) -> Boolean,
+        handleError: (String) -> Boolean,
+        postsRef: Query
+    ) {
         val usersRef = FirebaseDatabase.getInstance().getReference("users")
         val resourcesRef = FirebaseDatabase.getInstance().getReference("resources")
         val list: MutableList<NewsFeedItem> = ArrayList()
@@ -172,53 +55,63 @@ class NewsFeedService {
         postsRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)
-                var item: NewsFeedItem?
-                val userRef = usersRef.child(post?.uid ?: "")
-                userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(userSnapshot: DataSnapshot) {
-                        val user = userSnapshot.getValue(User::class.java)
+                if (post?.reports?.containsKey(FirebaseAuth.getInstance().uid) == true) {
+                } else {
+                    var item: NewsFeedItem?
+                    val userRef = usersRef.child(post?.uid ?: "")
+                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(userSnapshot: DataSnapshot) {
+                            val user = userSnapshot.getValue(User::class.java)
 
-                        item = NewsFeedItem(
-                            post?.uid!!,
-                            user?.photo_url!!,
-                            user.username!!,
-                            mutableListOf(),
-                            post.description,
-                            post.create_date!!,
-                            post.timestamp!!,
-                            post.latitude!!,
-                            post.longitude!!,
-                            post.address!!
-                        )
+                            item = NewsFeedItem(
+                                dataSnapshot.key!!,
+                                post?.uid!!,
+                                user?.photo_url!!,
+                                user.username!!,
+                                mutableListOf(),
+                                post.description,
+                                post.create_date!!,
+                                post.timestamp!!,
+                                post.latitude!!,
+                                post.longitude!!,
+                                post.address!!
+                            )
 
-                        val resourcesQuery =
-                            resourcesRef.orderByChild("post_id").equalTo(dataSnapshot.key)
-                        resourcesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                for (resourceSnapshot in dataSnapshot.children) {
-                                    val resource = resourceSnapshot.getValue(Resource::class.java)
-                                    if (resource != null) {
-                                        item?.resources?.add(resource.resource_url!!)
+                            val resourcesQuery =
+                                resourcesRef.orderByChild("post_id").equalTo(dataSnapshot.key)
+                            resourcesQuery.addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    for (resourceSnapshot in dataSnapshot.children) {
+                                        val resource =
+                                            resourceSnapshot.getValue(Resource::class.java)
+                                        if (resource != null) {
+                                            item?.resources?.add(resource.resource_url!!)
+                                        }
                                     }
+                                    list.add(item!!)
+                                    val sorted =
+                                        list.sortedWith(compareByDescending { it.timestamp })
+                                    updateData(ArrayList(sorted))
                                 }
-                                list.add(item!!)
-                                val sorted = list.sortedWith(compareByDescending { it.timestamp })
-                                updateData(ArrayList(sorted))
-                            }
 
-                            override fun onCancelled(databaseError: DatabaseError) {
-                                handleError(databaseError.message)
-                            }
-                        })
-                    }
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    handleError(databaseError.message)
+                                }
+                            })
+                        }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        handleError(databaseError.message)
-                    }
-                })
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            handleError(databaseError.message)
+                        }
+                    })
+                }
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            override fun onChildChanged(
+                dataSnapshot: DataSnapshot,
+                previousChildName: String?
+            ) {
                 // Handle changes to existing posts here
             }
 
@@ -234,59 +127,5 @@ class NewsFeedService {
                 handleError(databaseError.message)
             }
         })
-
-//        val query: Query
-//        try {
-//            query = FirebaseDatabase.getInstance().reference
-//                .child(POSTS)
-//                .orderByChild(TIMESTAMP)
-//        } catch (ex: Exception) {
-//            handleError("Data is not available")
-//            return
-//        }
-//
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.children.count() == 0) {
-//                    updateData(null)
-//                } else {
-//
-//                    val list: ArrayList<NewsFeedItem> = ArrayList()
-//
-//                    for (i in snapshot.children) {
-//                        val hMap = i.value as HashMap<*, *>
-//
-//                        if (hMap[UID] == uid) {
-//                            list.add(
-//                                NewsFeedItem(
-//                                    hMap[UID] as String,
-//                                    "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/profile_pic.png?alt=media&token=6593d9d5-0565-4d7e-b0ed-9c4edf3dc114",
-//                                    "username",
-//                                    mutableListOf(),
-//                                    hMap[DESCRIPTION] as String?,
-//                                    hMap[CREATE_DATE]!! as String,
-//                                    hMap[TIMESTAMP]!! as Long,
-//                                    hMap[LATITUDE]!! as String,
-//                                    hMap[LONGITUDE]!! as String,
-//                                    hMap[ADDRESS]!! as String
-//                                )
-//                            ) //todo get username, image and resources
-//                        }
-//                    }
-//
-//                    if (list.isEmpty()) {
-//                        updateData(null)
-//                    } else {
-//                        val sorted = list.sortedWith(compareByDescending { it.timestamp })
-//                        updateData(ArrayList(sorted))
-//                    }
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                handleError(error.message)
-//            }
-//        })
     }
 }

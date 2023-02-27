@@ -32,17 +32,18 @@ class PostsService {
             val uid = FirebaseAuth.getInstance().uid ?: ""
             val postId = UUID.randomUUID().toString()
             val ref = FirebaseDatabase.getInstance().getReference("/${POSTS}/$postId")
-            val newsFeedItem = HashMap<String, Any>()
+            val post = HashMap<String, Any>()
 
-            newsFeedItem[UID] = uid
-            newsFeedItem[DESCRIPTION] = description
-            newsFeedItem[CREATE_DATE] = date
-            newsFeedItem[TIMESTAMP] = timeStamp
-            newsFeedItem[LATITUDE] = location.first.toString()
-            newsFeedItem[LONGITUDE] = location.second.toString()
-            newsFeedItem[ADDRESS] = address
+            post[UID] = uid
+            post[DESCRIPTION] = description
+            post[CREATE_DATE] = date
+            post[TIMESTAMP] = timeStamp
+            post[LATITUDE] = location.first.toString()
+            post[LONGITUDE] = location.second.toString()
+            post[ADDRESS] = address
 
-            ref.setValue(newsFeedItem)
+
+            ref.setValue(post)
                 .addOnSuccessListener {
                     Log.d("Post", "added: $postId")
                     if (actionAfter != null) {
@@ -53,6 +54,17 @@ class PostsService {
                     Log.d("Post", "Failed to upload")
                     it.message?.let { it1 -> handleError(it1) }
                 }
+        }
+
+        fun reportPost(postId: String, userId: String, text: String) {
+            FirebaseDatabase.getInstance()
+                .getReference("/${POSTS}/$postId/reported")
+                .setValue(true)
+
+            FirebaseDatabase.getInstance()
+                .getReference("/${POSTS}/$postId/reports")
+                .child(userId)
+                .setValue(text)
         }
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="textfield_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,4 +36,22 @@
     <style name="switch_style">
         <item name="colorControlActivated">@color/appMainColor</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/appMainColor</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:windowTitleStyle">@style/CustomDialogTitle</item>
+    </style>
+
+    <style name="CustomDialogTitle">
+        <item name="android:textColor">@color/appMainColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="@android:style/Widget.Material.Button.Borderless.Colored">
+        <item name="android:textColor">@color/appMainColor</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

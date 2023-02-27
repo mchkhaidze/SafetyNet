@@ -1,9 +1,13 @@
 package ge.mchkhaidze.safetynet.adapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,12 +15,15 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import ge.mchkhaidze.safetynet.R
 import ge.mchkhaidze.safetynet.activity.MapsActivity
 import ge.mchkhaidze.safetynet.activity.ProfileActivity
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
 import ge.mchkhaidze.safetynet.model.UserInfo
 import ge.mchkhaidze.safetynet.service.NavigationService
+import ge.mchkhaidze.safetynet.service.PostsService
+
 
 class NewsFeedAdapter(private val context: Context) :
     RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
@@ -121,6 +128,31 @@ class NewsFeedAdapter(private val context: Context) :
                 Pair("lng", post.longitude)
             )
             NavigationService.loadPage(context, MapsActivity::class.java, extras)
+        }
+
+        if (post.userId == FirebaseAuth.getInstance().uid.toString()) {
+            holder.reportButton.visibility = View.GONE
+        } else {
+            holder.reportButton.visibility = View.VISIBLE
+            holder.reportButton.setOnClickListener {
+                val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+                builder.setTitle("Why are you reporting this post?")
+                val input = EditText(context)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                builder.setView(input)
+
+                builder.setPositiveButton("Report") { _, _ ->
+                    val text = input.text.toString()
+                    PostsService.reportPost(post.postId, FirebaseAuth.getInstance().uid ?: "", text)
+                    Log.d("position", position.toString() + list.size)
+                    list.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, list.size - position)
+                }
+
+                builder.show()
+
+            }
         }
     }
 
