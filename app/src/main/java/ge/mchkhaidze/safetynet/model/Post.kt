@@ -8,5 +8,7 @@ data class Post(
     val longitude: String? = null,
     var timestamp: Long? = null,
     var uid: String? = null,
-    var reports: Map<String, String>? = null
+    var reports: Map<String, String>? = null,
+    var likes: Map<String, Boolean>? = null,
+    var dislikes: Map<String, Boolean>? = null
 )

@@ -74,7 +74,11 @@ class NewsFeedService {
                                 post.timestamp!!,
                                 post.latitude!!,
                                 post.longitude!!,
-                                post.address!!
+                                post.address!!,
+                                post.likes?.contains(FirebaseAuth.getInstance().uid) == true,
+                                post.likes?.size ?: 0,
+                                post.dislikes?.contains(FirebaseAuth.getInstance().uid) == true,
+                                post.dislikes?.size ?: 0,
                             )
 
                             val resourcesQuery =

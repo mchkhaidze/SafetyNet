@@ -11,7 +11,11 @@ data class NewsFeedItem(
     var timestamp: Long,
     var latitude: String,
     var longitude: String,
-    var address: String
+    var address: String,
+    var likedByMe: Boolean,
+    var likeCount: Int,
+    var dislikedByMe: Boolean,
+    var dislikeCount: Int,
 ) {
     companion object {
         const val POSTS = "posts"

@@ -44,7 +44,9 @@ class NewsFeedAdapter(private val context: Context) :
         val countView: TextView = itemView.findViewById(R.id.overlay_view)
         val newsFeedDesc: TextView = itemView.findViewById(R.id.news_feed_description)
         val likeButton: ImageButton = itemView.findViewById(R.id.like)
+        val likeCount: TextView = itemView.findViewById(R.id.like_count)
         val dislikeButton: ImageButton = itemView.findViewById(R.id.dislike)
+        val dislikeCount: TextView = itemView.findViewById(R.id.dislike_count)
         val pinButton: ImageButton = itemView.findViewById(R.id.pin)
         val reportButton: ImageButton = itemView.findViewById(R.id.report)
     }
@@ -120,6 +122,86 @@ class NewsFeedAdapter(private val context: Context) :
                 Pair(NewsFeedItem.UID, post.userId)
             )
             NavigationService.loadPage(context, ProfileActivity::class.java, extras)
+        }
+
+        if (post.likedByMe) {
+            holder.likeButton.setImageResource(R.drawable.arrow_up_bold_outline_filled)
+        } else {
+            holder.likeButton.setImageResource(R.drawable.arrow_up_bold_outline)
+        }
+
+        if (post.likeCount > 0) {
+            holder.likeCount.text = post.likeCount.toString()
+        } else {
+            holder.likeCount.text = ""
+        }
+
+        if (post.dislikedByMe) {
+            holder.dislikeButton.setImageResource(R.drawable.arrow_down_bold_outline_filled)
+        } else {
+            holder.dislikeButton.setImageResource(R.drawable.arrow_down_bold_outline)
+        }
+
+        if (post.dislikeCount > 0) {
+            holder.dislikeCount.text = post.dislikeCount.toString()
+        } else {
+            holder.dislikeCount.text = ""
+        }
+
+        holder.likeButton.setOnClickListener {
+            if (post.likedByMe) {
+                post.likedByMe = false
+                post.likeCount = post.likeCount - 1
+                holder.likeButton.setImageResource(R.drawable.arrow_up_bold_outline)
+            } else {
+                post.likedByMe = true
+                post.likeCount = post.likeCount + 1
+                if (post.dislikedByMe) {
+                    post.dislikedByMe = false
+                    post.dislikeCount = post.dislikeCount - 1
+                    holder.dislikeButton.setImageResource(R.drawable.arrow_down_bold_outline)
+                }
+                holder.likeButton.setImageResource(R.drawable.arrow_up_bold_outline_filled)
+            }
+            if (post.likeCount > 0) {
+                holder.likeCount.text = post.likeCount.toString()
+            } else {
+                holder.likeCount.text = ""
+            }
+            if (post.dislikeCount > 0) {
+                holder.dislikeCount.text = post.dislikeCount.toString()
+            } else {
+                holder.dislikeCount.text = ""
+            }
+            PostsService.updatePostLikes(post.postId, FirebaseAuth.getInstance().uid ?: "", post.likedByMe, post.dislikedByMe)
+        }
+
+        holder.dislikeButton.setOnClickListener {
+            if (post.dislikedByMe) {
+                post.dislikedByMe = false
+                post.dislikeCount = post.dislikeCount - 1
+                holder.dislikeButton.setImageResource(R.drawable.arrow_down_bold_outline)
+            } else {
+                post.dislikedByMe = true
+                post.dislikeCount = post.dislikeCount + 1
+                if (post.likedByMe) {
+                    post.likedByMe = false
+                    post.likeCount = post.likeCount - 1
+                    holder.likeButton.setImageResource(R.drawable.arrow_up_bold_outline)
+                }
+                holder.dislikeButton.setImageResource(R.drawable.arrow_down_bold_outline_filled)
+            }
+            if (post.likeCount > 0) {
+                holder.likeCount.text = post.likeCount.toString()
+            } else {
+                holder.likeCount.text = ""
+            }
+            if (post.dislikeCount > 0) {
+                holder.dislikeCount.text = post.dislikeCount.toString()
+            } else {
+                holder.dislikeCount.text = ""
+            }
+            PostsService.updatePostLikes(post.postId, FirebaseAuth.getInstance().uid ?: "", post.likedByMe, post.dislikedByMe)
         }
 
         holder.pinButton.setOnClickListener {

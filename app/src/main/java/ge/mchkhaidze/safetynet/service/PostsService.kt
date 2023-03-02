@@ -66,5 +66,39 @@ class PostsService {
                 .child(userId)
                 .setValue(text)
         }
+
+        fun updatePostLikes(postId: String, userId: String, liked: Boolean, disliked: Boolean) {
+            if (liked) {
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/likes")
+                    .child(userId)
+                    .setValue(true)
+
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/dislikes")
+                    .child(userId)
+                    .removeValue()
+            } else if (disliked) {
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/dislikes")
+                    .child(userId)
+                    .setValue(true)
+
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/likes")
+                    .child(userId)
+                    .removeValue()
+            } else {
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/dislikes")
+                    .child(userId)
+                    .removeValue()
+
+                FirebaseDatabase.getInstance()
+                    .getReference("/${POSTS}/$postId/likes")
+                    .child(userId)
+                    .removeValue()
+            }
+        }
     }
 }
