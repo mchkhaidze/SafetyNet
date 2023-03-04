@@ -7,7 +7,7 @@
             android:key="user_photo"
             android:layout="@layout/image_preference_layout"
             android:selectable="true"
-            android:title="Edit photo"
+            android:title="Change photo"
             app:persistent="false" />
 
         <EditTextPreference

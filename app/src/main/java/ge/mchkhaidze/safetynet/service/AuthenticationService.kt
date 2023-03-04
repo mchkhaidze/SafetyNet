@@ -3,6 +3,7 @@ package ge.mchkhaidze.safetynet.service
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_ALERT
+import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_NOTIFICATIONS
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.DEFAULT_RADIUS
 import ge.mchkhaidze.safetynet.service.UserInfoService.Companion.uploadUserInformation
 
@@ -39,6 +40,7 @@ class AuthenticationService {
                         null,
                         "",
                         DEFAULT_RADIUS,
+                        DEFAULT_NOTIFICATIONS,
                         DEFAULT_ALERT,
                         actionAfterLogged,
                         handleError

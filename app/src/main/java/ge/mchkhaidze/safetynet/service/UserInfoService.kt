@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import ge.mchkhaidze.safetynet.model.User
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.ALERT
+import ge.mchkhaidze.safetynet.model.UserInfo.Companion.NOTIFICATIONS
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.PHOTO_URL
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.RADIUS
 import ge.mchkhaidze.safetynet.model.UserInfo.Companion.USERNAME
@@ -23,12 +24,21 @@ class UserInfoService {
             imageUri: Uri?,
             imageURL: String,
             radius: Int,
+            notifications: Boolean,
             alert: Boolean,
             actionAfterLogged: (() -> Boolean)?,
             handleError: (String) -> Boolean
         ) {
             if (imageUri == null) {
-                uploadInfo(username, imageURL, radius, alert, actionAfterLogged, handleError)
+                uploadInfo(
+                    username,
+                    imageURL,
+                    radius,
+                    notifications,
+                    alert,
+                    actionAfterLogged,
+                    handleError
+                )
                 return
             }
 
@@ -42,6 +52,7 @@ class UserInfoService {
                             username,
                             currUrl.toString(),
                             radius,
+                            notifications,
                             alert,
                             actionAfterLogged,
                             handleError
@@ -74,6 +85,7 @@ class UserInfoService {
             username: String,
             photoUrl: String,
             radius: Int,
+            notifications: Boolean,
             alert: Boolean,
             actionAfterLogged: (() -> Boolean)?,
             handleError: (String) -> Boolean
@@ -84,6 +96,7 @@ class UserInfoService {
             userDetails[USERNAME] = username
             userDetails[PHOTO_URL] = photoUrl
             userDetails[RADIUS] = radius
+            userDetails[NOTIFICATIONS] = notifications
             userDetails[ALERT] = alert
             ref.setValue(userDetails)
                 .addOnSuccessListener {
