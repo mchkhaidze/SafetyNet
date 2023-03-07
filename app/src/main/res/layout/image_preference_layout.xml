@@ -16,7 +16,6 @@
         android:id="@+id/image"
         android:layout_width="@dimen/user_photo_size"
         android:layout_height="@dimen/user_photo_size"
-        android:contentDescription="@string/profile_photo"
-        android:src="@drawable/profile_pic" />
+        android:contentDescription="@string/profile_photo" />
 
 </LinearLayout>

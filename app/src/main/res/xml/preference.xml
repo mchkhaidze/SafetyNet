@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="Personal information">
 
-        <Preference
+        <ge.mchkhaidze.safetynet.ImagePreference
             android:key="user_photo"
             android:layout="@layout/image_preference_layout"
             android:selectable="true"
@@ -13,15 +13,13 @@
         <EditTextPreference
             android:key="username"
             android:persistent="false"
-            android:summary="Change your username"
-            android:title="Username" />
+            android:summary="Change your username" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Configurations">
 
         <SeekBarPreference
-            android:defaultValue="10"
             android:key="radius"
             android:max="100"
             android:persistent="false"
@@ -30,14 +28,12 @@
             app:showSeekBarValue="true" />
 
         <SwitchPreference
-            android:defaultValue="true"
             android:key="notifications"
             android:persistent="false"
             android:summary="Receive notifications"
             android:title="Notifications" />
 
         <SwitchPreference
-            android:defaultValue="false"
             android:key="alerts"
             android:persistent="false"
             android:summary="Receive critical alerts"

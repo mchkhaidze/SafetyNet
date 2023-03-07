@@ -1,19 +1,19 @@
 package ge.mchkhaidze.safetynet.activity
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.preference.EditTextPreference
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.google.android.material.appbar.MaterialToolbar
 import ge.mchkhaidze.safetynet.ErrorHandler
+import ge.mchkhaidze.safetynet.ImagePreference
 import ge.mchkhaidze.safetynet.R
 import ge.mchkhaidze.safetynet.Utils
 import ge.mchkhaidze.safetynet.service.UserInfoService
 
 
 class SettingsActivity : BaseActivity(), ErrorHandler {
-    private lateinit var imageView: ImageView
+    private lateinit var image: ImagePreference
     private lateinit var username: EditTextPreference
     private lateinit var distance: SeekBarPreference
     private lateinit var notifications: SwitchPreference
@@ -41,7 +41,7 @@ class SettingsActivity : BaseActivity(), ErrorHandler {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_done -> {
-                    //todo save updated image
+                    image = fragment.findPreference("user_photo")!!
                     username = fragment.findPreference("username")!!
                     distance = fragment.findPreference("radius")!!
                     notifications = fragment.findPreference("notifications")!!
@@ -49,7 +49,7 @@ class SettingsActivity : BaseActivity(), ErrorHandler {
 
                     UserInfoService.uploadUserInformation(
                         username.title.toString(),
-                        null,
+                        image.getImageUri(),
                         "",
                         distance.value,
                         notifications.isChecked,

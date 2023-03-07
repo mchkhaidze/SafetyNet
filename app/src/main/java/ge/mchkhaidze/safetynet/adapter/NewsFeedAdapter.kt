@@ -20,6 +20,7 @@ import ge.mchkhaidze.safetynet.R
 import ge.mchkhaidze.safetynet.activity.MapsActivity
 import ge.mchkhaidze.safetynet.activity.ProfileActivity
 import ge.mchkhaidze.safetynet.model.NewsFeedItem
+import ge.mchkhaidze.safetynet.model.User
 import ge.mchkhaidze.safetynet.model.UserInfo
 import ge.mchkhaidze.safetynet.service.NavigationService
 import ge.mchkhaidze.safetynet.service.PostsService
@@ -29,8 +30,6 @@ class NewsFeedAdapter(private val context: Context) :
     RecyclerView.Adapter<NewsFeedAdapter.ViewHolder>() {
 
 
-    private val defaultPhoto =
-        "https://firebasestorage.googleapis.com/v0/b/safetynet-1.appspot.com/o/profile_pic.png?alt=media&token=6593d9d5-0565-4d7e-b0ed-9c4edf3dc114"
     var list: ArrayList<NewsFeedItem> = ArrayList()
     private var isTextExpanded = false
 
@@ -63,7 +62,7 @@ class NewsFeedAdapter(private val context: Context) :
         val imageUrl = if (post.userImage != "") {
             post.userImage
         } else {
-            defaultPhoto
+            User.DEFAULT_IMAGE
         }
         Glide.with(holder.itemView.context)
             .load(imageUrl)
@@ -173,7 +172,12 @@ class NewsFeedAdapter(private val context: Context) :
             } else {
                 holder.dislikeCount.text = ""
             }
-            PostsService.updatePostLikes(post.postId, FirebaseAuth.getInstance().uid ?: "", post.likedByMe, post.dislikedByMe)
+            PostsService.updatePostLikes(
+                post.postId,
+                FirebaseAuth.getInstance().uid ?: "",
+                post.likedByMe,
+                post.dislikedByMe
+            )
         }
 
         holder.dislikeButton.setOnClickListener {
@@ -201,7 +205,12 @@ class NewsFeedAdapter(private val context: Context) :
             } else {
                 holder.dislikeCount.text = ""
             }
-            PostsService.updatePostLikes(post.postId, FirebaseAuth.getInstance().uid ?: "", post.likedByMe, post.dislikedByMe)
+            PostsService.updatePostLikes(
+                post.postId,
+                FirebaseAuth.getInstance().uid ?: "",
+                post.likedByMe,
+                post.dislikedByMe
+            )
         }
 
         holder.pinButton.setOnClickListener {
