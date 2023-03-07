@@ -92,6 +92,7 @@ class SignUpActivity : BaseActivity(), ErrorHandler {
         signInText.text = text
         signInText.movementMethod = LinkMovementMethod.getInstance()
         signInText.highlightColor = Color.TRANSPARENT
+        signInText.setLinkTextColor(Color.CYAN)
     }
 
     private fun goToSettings(): Boolean {

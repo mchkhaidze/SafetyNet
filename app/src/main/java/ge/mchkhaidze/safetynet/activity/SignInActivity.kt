@@ -84,6 +84,7 @@ class SignInActivity : BaseActivity(), ErrorHandler {
         signUpText.text = text
         signUpText.movementMethod = LinkMovementMethod.getInstance()
         signUpText.highlightColor = Color.TRANSPARENT
+        signUpText.setLinkTextColor(Color.CYAN)
     }
 
 

@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -78,6 +77,9 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
                 openCameraActivityForResult()
             }
         }
+
+        setUpdButton()
+
         parentView = requireActivity().window.decorView
         globalLayoutListener = OnGlobalLayoutListener {
             val rect = Rect()
@@ -111,8 +113,6 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
 //            bottomSheet.requestLayout()
 //        }
         parentView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
-
-        setUpdButton()
 
         return view
     }

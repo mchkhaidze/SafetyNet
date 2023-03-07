@@ -11,6 +11,7 @@
             app:persistent="false" />
 
         <EditTextPreference
+            android:dialogTitle="New username"
             android:key="username"
             android:persistent="false"
             android:summary="Change your username" />

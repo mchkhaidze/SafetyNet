@@ -136,7 +136,5 @@ class PreferencesFragment : PreferenceFragmentCompat(), ErrorHandler {
 
     companion object {
         private const val PICK_IMAGE_REQUEST_CODE = 1
-        private const val REQUEST_GALLERY_PERMISSION = 100
-        private const val REQUEST_CAMERA_PERMISSION = 200
     }
 }
