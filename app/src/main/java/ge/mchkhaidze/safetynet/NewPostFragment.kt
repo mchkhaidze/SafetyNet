@@ -7,9 +7,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.location.*
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,13 @@ import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ge.mchkhaidze.safetynet.adapter.UploadedContentAdapter
 import ge.mchkhaidze.safetynet.service.PostsService
+import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -31,7 +37,8 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
         private const val REQUEST_CAMERA_PERMISSION = 200
     }
 
-    private var resources: List<MediaStore.Files> = listOf()
+    private var selectedImageUri: Uri? = null
+    private var adapter = UploadedContentAdapter()
 
     private lateinit var gallery: ImageButton
     private lateinit var camera: ImageButton
@@ -39,6 +46,7 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
     private lateinit var parentView: View
     private lateinit var globalLayoutListener: OnGlobalLayoutListener
     private lateinit var sendButton: ImageButton
+    private lateinit var resourceRv: RecyclerView
 
 
     override fun onCreateView(
@@ -47,6 +55,8 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_new_post, container, false)
+        resourceRv = view.findViewById(R.id.content_rv)
+        resourceRv.adapter = adapter
         gallery = view.findViewById(R.id.gallery)
         camera = view.findViewById(R.id.camera)
         sendButton = view.findViewById(R.id.send_button)
@@ -78,7 +88,7 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
             }
         }
 
-        setUpdButton()
+        setUpButton()
 
         parentView = requireActivity().window.decorView
         globalLayoutListener = OnGlobalLayoutListener {
@@ -117,9 +127,9 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
         return view
     }
 
-    private fun setUpdButton() {
+    private fun setUpButton() {
         sendButton.setOnClickListener {
-            if (description.text.isNotEmpty() || resources.isNotEmpty()) {
+            if (description.text.isNotEmpty() || adapter.list.isNotEmpty()) {
                 val text = description.text
                 val location: Pair<Double, Double>? = getCurrentLocation()
 
@@ -144,7 +154,7 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
                         addressString,
                         Utils.getFormattedDate(),
                         System.currentTimeMillis(),
-                        resources,
+                        adapter.list,
                         this::dismissFragment,
                         this::handleError
                     )
@@ -178,20 +188,39 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-                Log.d("TAG123", data.toString())
+                val selectedImages: List<Uri> = if (data?.clipData != null) {
+                    val count = data.clipData!!.itemCount
+                    (0 until count).map { data.clipData!!.getItemAt(it).uri }
+                } else {
+                    listOf(data?.data!!)
+                }
+
+                adapter.list.addAll(selectedImages)
+                adapter.notifyDataSetChanged()
             }
         }
 
     private fun openCameraActivityForResult() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val photoFile = createImageFile()
+        selectedImageUri = FileProvider.getUriForFile(
+            requireContext(),
+            "ge.mchkhaidze.safetynet.fileprovider",
+            photoFile
+        )
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImageUri)
         cameraResultLauncher.launch(intent)
     }
 
     private var cameraResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val image = result?.data
-                Log.d("123", image.toString())
+
+                if (selectedImageUri != null) {
+                    adapter.list.add(selectedImageUri!!)
+                    adapter.notifyDataSetChanged()
+
+                }
             }
         }
 
@@ -279,5 +308,13 @@ class NewPostFragment : BottomSheetDialogFragment(), ErrorHandler {
             return Pair(latitude, longitude)
         }
         return null
+    }
+
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val fileName = "JPEG_${timeStamp}_"
+        val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile(fileName, ".jpg", storageDir)
     }
 }

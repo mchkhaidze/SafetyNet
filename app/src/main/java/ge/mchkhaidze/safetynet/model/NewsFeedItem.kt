@@ -19,6 +19,7 @@ data class NewsFeedItem(
 ) {
     companion object {
         const val POSTS = "posts"
+        const val RESOURCES = "resources"
         const val CREATE_DATE = "create_date"
         const val DESCRIPTION = "description"
         const val LATITUDE = "latitude"

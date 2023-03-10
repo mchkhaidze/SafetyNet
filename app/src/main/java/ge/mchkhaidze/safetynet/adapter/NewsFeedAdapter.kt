@@ -94,6 +94,8 @@ class NewsFeedAdapter(private val context: Context) :
         holder.viewPager.adapter = MediaPagerAdapter(post.resources)
 
         if (post.resources.size > 1) {
+            holder.countView.visibility = View.VISIBLE
+
             holder.viewPager.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(pagePosition: Int) {

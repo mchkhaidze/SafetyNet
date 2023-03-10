@@ -82,6 +82,21 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/content_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingBottom="10dp"
+                android:scrollbarSize="5dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="horizontal"
+                android:fadeScrollbars="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
